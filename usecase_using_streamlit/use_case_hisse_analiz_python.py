@@ -328,23 +328,3 @@ class HisseAnaliz():
             "roe": self.rev.return_on_equity(),
             "debt_to_equity": self.rev.debt_to_equity()
         }
-
-
-# ha = HisseAnaliz(firma_kodu="BIMAS")
-# ha1 = ha.get_company_info()
-# ha2 = ha.get_balance_sheet_summary()
-# ha3 = ha.get_sum()
-# ha4 = ha.get_sources()
-# ha5 = ha.fundamental_ratios()
-# # ha6 = ha.indicators()
-
-
-# print(ha1)
-# print()
-# print(ha2)
-# print()
-# print(ha3)
-# print()
-# print(ha4)
-# print()
-# print(ha5)
