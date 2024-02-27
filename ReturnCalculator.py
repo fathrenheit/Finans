@@ -2,9 +2,40 @@ from datetime import datetime
 from Yahoo import YahooFinancePriceDataFetcher
 import pandas as pd
 
-class ReturnCalculator:
+class ReturnCalculator:  
+    """
+    A class for calculating investment returns based on historical stock prices and dividend payments.
+
+    Attributes:
+        ticker (str): The stock ticker symbol for the company.
+        period1 (str): The start date of the historical data collection period in "dd-mm-yyyy" format.
+        period2 (str): The end date of the historical data collection period in "dd-mm-yyyy" format.
+
+    Methods:
+        __init__(ticker, period1, period2):
+            Initializes the ReturnCalculator object with the given parameters, collects historical price data, and handles errors during initialization.
+        preprocess_fiyatlar():
+            Processes historical stock price and dividend data obtained from finance.yahoo, performs necessary adjustments, and returns a DataFrame.
+        process(hesaplama_tipi):
+            Processes the preprocessed data based on the calculation type specified ('duzenli' for regular investments, 'tek' for one-time investments) and returns a DataFrame.
+        df_maker(hesaplama_tipi, div_reinvest, tutar):
+            Generates final DataFrames based on calculation type, reinvestment option, and investment amount.
+        report(hesaplama_tipi, div_reinvest, tutar):
+            Creates a report summarizing the investment calculation results, including total investment amount, total dividend income, total number of shares, and current portfolio value.
+    """
 
     def __init__(self, ticker, period1, period2) -> None:
+        """
+        Initializes the ReturnCalculator object with the given parameters, collects historical price data, and handles errors during initialization.
+
+        Parameters:
+            ticker (str): The stock ticker symbol for the company.
+            period1 (str): The start date of the historical data collection period in "dd-mm-yyyy" format.
+            period2 (str): The end date of the historical data collection period in "dd-mm-yyyy" format.
+        
+        Raises:
+            RuntimeError: If an error occurs during initialization.
+        """
         try:
             self.ticker = ticker
             self.period1 = period1
@@ -19,7 +50,10 @@ class ReturnCalculator:
     def preprocess_fiyatlar(self):
 
         """
-        Tarihsel hisse fiyat bilgilerini, ayni tarihlerdeki Dolar/Tl kapanis kur fiyatlarini ve dagitilan temettu tutarlarini finance.yahoo sitesinden kazir ve gerekli duzenlemeleri yapar.
+        Processes historical stock price and dividend data obtained from finance.yahoo, performs necessary adjustments, and returns a DataFrame.
+        
+        Returns:
+            pd.DataFrame: A pandas DataFrame containing processed historical stock price and dividend data, including columns for date, stock ticker symbol, USD/TRY exchange rate, closing price in TRY and USD, dividends in TRY, and adjusted dividends in TRY.
         """
         # Hisseye ait tarihsel fiyat bilgisi
         f = self.price_df
@@ -49,8 +83,15 @@ class ReturnCalculator:
     
     def process(self, hesaplama_tipi):
         """
-        fiyat_df uzerinde temettu tarihlerini ve hesaplama tipini baz alarak gerekli duzenlemeleri yapar. 
+        Processes the price DataFrame based on dividend dates and calculation type.
+
+        Parameters:
+            hesaplama_tipi (str): The type of calculation, either "duzenli" for regular investments or "tek" for one-time investments.
+
+        Returns:
+            pd.DataFrame: A DataFrame containing the processed price and dividend data.
         """
+        # Fiyat dataframeini okur
         fiyat_df = self.preprocess_fiyatlar()
         # Duzenli alimlarda her ayin ilk gunu belli tutarlarda alim yapilmasi ongorulur
         if hesaplama_tipi == "duzenli":
@@ -65,16 +106,24 @@ class ReturnCalculator:
         elif hesaplama_tipi == "tek": # tek seferlik
             dates_price = pd.Series([fiyat_df.iloc[0]["TARIH"], fiyat_df.iloc[-1]["TARIH"]])
         
+        # Temettu dagitimi olan gunlere gore filtreler
         dates_div = fiyat_df[fiyat_df["TEMETTU (TL)"] != 0]["TARIH"].to_list()
         new_fiyat_df = pd.concat([fiyat_df[fiyat_df["TARIH"].isin(dates_price)], fiyat_df[fiyat_df["TARIH"].isin(dates_div)]]).sort_values(by="TARIH")
         return new_fiyat_df.reset_index(drop=True)
 
     def df_maker(self, hesaplama_tipi, div_reinvest, tutar):
         """
-        Nihai dfleri olusturur. bu dfler hesaplama tipi, tutar, period1 ve period2'ye gore degiskenlik gosterecektir.
+        Creates the final DataFrames based on calculation type, dividend reinvestment option, and investment amount.
+
+        Parameters:
+            hesaplama_tipi (str): The type of calculation, either "duzenli" for regular investments or "tek" for one-time investments.
+            div_reinvest (bool): A boolean indicating whether dividends should be reinvested.
+            tutar (float): The investment amount.
+
+        Returns:
+            pd.DataFrame: A DataFrame containing the final calculations.
         """
         df = self.process(hesaplama_tipi=hesaplama_tipi)
-        # print(df)
         if hesaplama_tipi == "tek":
             baslangic_lot = tutar // df.loc[0, "HISSE KAPANIS FIYATI (TL)"]
             artan = tutar % df.loc[0, "HISSE KAPANIS FIYATI (TL)"]
@@ -133,7 +182,15 @@ class ReturnCalculator:
     
     def report(self, hesaplama_tipi, div_reinvest, tutar):
         """
-        Hesaplamaya ait bir rapor olusturur
+        Generates a report for the calculation.
+
+        Parameters:
+            hesaplama_tipi (str): The type of calculation, either "duzenli" for regular investments or "tek" for one-time investments.
+            div_reinvest (bool): A boolean indicating whether dividends should be reinvested.
+            tutar (float): The investment amount.
+
+        Returns:
+            dict: A dictionary containing the report information.
         """
         return_df = self.df_maker(hesaplama_tipi=hesaplama_tipi, div_reinvest=div_reinvest, tutar=tutar)
         toplam_lot = return_df["LOT"].sum()
@@ -178,7 +235,3 @@ class ReturnCalculator:
                 "guncel_portfoy": guncel_portfoy + tem_geliri,
                 "guncel_portfoy_usd": guncel_portfoy_usd + tem_geliri_usd
                 }
-
-# rx = ReturnCalculator(ticker="ASTOR", period1="25-02-2020", period2="25-02-2024")
-# print(rx.df_maker(hesaplama_tipi="tek", div_reinvest=1, tutar=10000))
-# print(rx.report(hesaplama_tipi="tek", div_reinvest=1, tutar=10000))

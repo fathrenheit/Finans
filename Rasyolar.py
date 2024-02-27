@@ -3,83 +3,89 @@ import pandas as pd
 from IsYatirim import IsYatirimScraper
 from datetime import datetime, timedelta
 
-is_yatirim = IsYatirimScraper()
-
 class Review(object):
     """
     A class for simply reviewing financial data of any given company.
+
+    Attributes:
+        company_name (str): The name or ticker symbol of the company.
+        year (int): The year for which financial data is to be reviewed.
+        is_yatirim_init (IsYatirimScraper): An instance of IsYatirimScraper class for fetching financial data.
+        financial_statement (tuple): A tuple containing financial statements as annually and quarterly.
+        number_of_shares (float): The total number of shares of the company.
+        current_price (float): The current price of the company's stock.
+        market_value (float): The market value of the company calculated as number_of_shares * current_price.
+        daily_price_change_rate (float): The daily percentage change in the company's stock price.
+        cash_initial (float): The amount of cash at the beginning of the period.
+        working_capital (float): The working capital of the company calculated as current assets - current liabilities.
+
+    Methods:
+        __init__(company_name, year): 
+            Initializes the Review object.
+        __initializer():
+            Fetches balance-sheet as quarterly and annually.
+        __setter(): 
+            Sets initial values including current price, number of shares, cash initial, etc.
+        price_to_earning_ratio(): 
+            Calculates and returns the Price-to-Earnings (P/E) ratio.
+        price_to_book_ratio(): 
+            Calculates and returns the Price-to-Book (P/B) ratio.
+        price_to_sales_ratio(): 
+            Calculates and returns the Price-to-Sales (P/S) ratio.
+        earning_per_share(): 
+            Calculates and returns the earnings per share (EPS).
+        return_on_equity(): 
+            Calculates and returns the Return-On-Equity (ROE) ratio.
+        return_on_assets(): 
+            Calculates and returns the Return-On-Assets (ROA) ratio.
+        debt_to_equity(): 
+            Calculates and returns the Debt-to-Equity (D/E) ratio.
+        liquidity(): 
+            Calculates and returns liquidity ratios.
+        net_sales(): 
+            Returns the net sales amount quarterly.
+        gross_profit_gpm(): 
+            Calculates and returns gross profit and gross profit margin.
+        operating_income(): 
+            Calculates and returns operating income.
+        net_operating_income(): 
+            Returns the net operating income.
+        ebitda():
+            Calculates and returns Earnings Before Interest, Taxes, Depreciation, and Amortization (EBITDA).
+        net_income():
+            Returns the net income quarterly.
+        financial_debt():
+            Calculates and returns the sum of financial debts.
+        net_debt():
+            Calculates and returns the net debt.
     """
+
     def __init__(self, company_name, year) -> None:
+        """
+        Initializes the Review object.
+
+        Args:
+            company_name (str): The name or ticker symbol of the company.
+            year (int): The year for which financial data is to be reviewed.
+        """
         self.company_name = company_name
         self.is_yatirim_init = IsYatirimScraper() # initializes IsYatirimScraper
         self.year = year
-        self.financial_statement = self.initializer()
-        self.number_of_shares = self.setter()["number_of_shares"]
-        self.current_price = self.setter()["current_price"]
+        self.financial_statement = self.__initializer()
+        self.number_of_shares = self.__setter()["number_of_shares"]
+        self.current_price = self.__setter()["current_price"]
         self.market_value = self.number_of_shares * self.current_price
-        self.daily_price_change_rate = self.setter()["daily_price_change_rate"]
-        self.cash_initial = self.setter()["cash_initial"]
-        self.working_capital = self.setter()["working_capital"]
-        self.rows_to_keep = [
-        "Dönen Varlıklar", # varliklar
-        "Nakit ve Nakit Benzerleri",
-        "Finansal Yatırımlar",
-        "Ticari Alacaklar",
-        "Stoklar",
-        "Duran Varlıklar",
-        "Maddi Duran Varlıklar",
-        "Maddi Olmayan Duran Varlıklar",
-        "Ertelenmiş Vergi Varlığı",
-        "Diğer Duran Varlıklar",
-        "TOPLAM VARLIKLAR",
-        "KAYNAKLAR", # kaynaklar
-        "Kısa Vadeli Yükümlülükler",
-        "Uzun Vadeli Yükümlülükler",
-        "Özkaynaklar",
-        "Ana Ortaklığa Ait Özkaynaklar",
-        "Ödenmiş Sermaye",
-        "Azınlık Payları",
-        "TOPLAM KAYNAKLAR",
-        "Satış Gelirleri", # gelir tablosu
-        "Satışların Maliyeti (-)",
-        "Ticari Faaliyetlerden Brüt Kar (Zarar)",
-        "BRÜT KAR (ZARAR)",
-        "Pazarlama, Satış ve Dağıtım Giderleri (-)",
-        "Genel Yönetim Giderleri (-)",
-        "Araştırma ve Geliştirme Giderleri (-)",
-        "Diğer Faaliyet Gelirleri",
-        "Diğer Faaliyet Giderleri (-)",
-        "FAALİYET KARI (ZARARI)",
-        "Net Faaliyet Kar/Zararı",
-        "Finansman Gideri Öncesi Faaliyet Karı/Zararı",
-        "SÜRDÜRÜLEN FAALİYETLER VERGİ ÖNCESİ KARI (ZARARI)",
-        "SÜRDÜRÜLEN FAALİYETLER DÖNEM KARI/ZARARI",
-        "DÖNEM KARI (ZARARI)",
-        "Azınlık Payları",
-        "Ana Ortaklık Payları",
-        "Amortisman Giderleri", # dipnot
-        "Yurtiçi Satışlar",
-        "Yurtdışı Satışlar",
-        "Net Yabancı Para Pozisyonu",
-        "İşletme Faaliyetlerinden Kaynaklanan Net Nakit",# nakit akim tablosu
-        "İşletme Sermayesinde Değişikler Öncesi Faaliyet Karı (+)",
-        "İşletme Sermayesindeki Değişiklikler",
-        "Esas Faaliyet ile İlgili Oluşan Nakit (+)",
-        "Diğer İşletme Faaliyetlerinden Nakit",
-        "Yatırım Faaliyetlerinden Kaynaklanan Nakit",
-        "Serbest Nakit Akım",
-        "Temettü Ödemeleri",
-        "Sermaye Artırımı",
-        "Finansman Faaliyetlerden Kaynaklanan Nakit",
-        "Nakit ve Benzerlerindeki Değişim",
-        "Dönem Başı Nakit Değerler",
-        "Dönem Sonu Nakit",
-    ]
+        self.daily_price_change_rate = self.__setter()["daily_price_change_rate"]
+        self.cash_initial = self.__setter()["cash_initial"]
+        self.working_capital = self.__setter()["working_capital"]
     
-    def initializer(self):
+    def __initializer(self):
         """
-        Returns balance-sheet as quarterly and annually.
-        Financial-statements consist of (1) Balance-sheet, (2) Income-statement, (3) Cash Flow
+        Fetches balance-sheet as quarterly and annually.
+        Financial-statements consist of:
+        (1) Balance-sheet, 
+        (2) Income-statement, 
+        (3) Cash Flow
         """
         is_yatirim = self.is_yatirim_init
         fs_ann = is_yatirim.get_is_yatirim_financial_data(ticker=self.company_name, current_year=self.year, cumulative=True)
@@ -88,7 +94,7 @@ class Review(object):
         fs_qua["ACIKLAMA"] = fs_qua["ACIKLAMA"].apply(lambda x:x.strip())
         return fs_ann, fs_qua # financial-statements as annually and quarterly
 
-    def setter(self):
+    def __setter(self):
         """
         Sets some initial values.
         """
@@ -120,32 +126,7 @@ class Review(object):
             "working_capital":working_capital,
             "year":latest_year
             }
-    
-    def processing(self):
-        """
-        Process Financial-Statements and returns balance-sheet, income-statement, foot-notes and cash-flow in a table.
-        """
-        # Reading financial-statement
-        fs_ann = self.financial_statement[0] # Preferably annual
-        # Filtering based on self.rows_to_keep
-        fs_ann = fs_ann[fs_ann["ACIKLAMA"].isin(self.rows_to_keep)].reset_index(drop=True)
-        # Balance-sheet
-        ind_bs = 0, fs_ann[fs_ann["ACIKLAMA"] == "Satış Gelirleri"].index[0] 
-        bs = fs_ann[ind_bs[0]: ind_bs[1]].reset_index(drop=True)
-        bs = bs.rename(columns={"ACIKLAMA":"FINANSAL DURUM TABLOSU"})
-        # Income-statement
-        ind_income = ind_bs[1], fs_ann[fs_ann["ACIKLAMA"]=="Amortisman Giderleri"].index[0]
-        inc_st = fs_ann[ind_income[0]: ind_income[1]].reset_index(drop=True) 
-        inc_st = inc_st.rename(columns={"ACIKLAMA":"GELIR TABLOSU"})
-        # Foot-notes
-        ind_fn = ind_income[1], fs_ann[fs_ann["ACIKLAMA"]=="İşletme Faaliyetlerinden Kaynaklanan Net Nakit"].index[0]
-        fn  = fs_ann[ind_fn[0]: ind_fn[1]].reset_index(drop=True) 
-        fn = fn.rename(columns={"ACIKLAMA":"DIPNOTLAR"})
-        # Cash-Flow
-        cash_flow = fs_ann[ind_fn[1]:].reset_index(drop=True)
-        cash_flow = cash_flow.rename(columns={"ACIKLAMA":"NAKIT AKIM TABLOSU"})
-        return bs, inc_st, fn, cash_flow # Balance-sheet; Bilanco, Income-statement; Gelir tablosu, Foot-notes; Dipnotlar, Cash-flow; Nakit akim tablosu
- 
+
     def price_to_earning_ratio(self):
         """
         F/K oranını çeyreklik olarak hesaplar ve geri verir.
