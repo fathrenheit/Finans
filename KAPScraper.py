@@ -9,7 +9,7 @@ import sys
 import csv 
 import io
 
-class KAPHelper: #
+class KAPHelper:
     """
     KAP scraper için bir yardımcı sınıf olarak tasarlanmıştır.
     A helper for KAP.org.tr scraper.

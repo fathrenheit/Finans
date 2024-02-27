@@ -52,8 +52,8 @@ class YahooFinancePriceDataFetcher:
         Returns:
             pandas DataFrame: DataFrame containing the price history data.
         """
-        if company_code not in ["USDTRY=X", "EURTRY=X", "GBPTRY=X"]:
-            company_code += ".IS"
+        # If the company in the BIST, add .IS at the end of the ticker name: SISE -> SISE.IS
+        # Currency codes: USD/TRY: USDTRY=X, EUR/TRY: EURTRY=X, GBP/TRY: GBPTRY=X
 
         if last_x_days:
             # last x days; a valid link https://query1.finance.yahoo.com/v8/finance/chart/EREGL/IS?&interval=1d&range=7d
