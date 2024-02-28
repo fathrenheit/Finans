@@ -17,7 +17,7 @@ Bu uygulama, BIST50 endeksinde yer alan hisseleri genel hatlarıyla analiz etmey
     - Seçilen hisseye geçmişte yapılan tek seferlik yatırımın günümüzdeki durumunu veya düzenli alımlar yapıldığı takdirde hisse performansının günümüzdeki durumunu görebilirsiniz. 
     - Hesaplamalara temettüleri dahil ederek bileşik getirinin etkisini görmeniz de mümkün!
 
-Bu uygulama, şurada yeralan 👉 <a href="https://github.com/fathrenheit/Finans" target="_blank">Finans</a> reposu kullanılarak oluşturulmuştur.
+Bu uygulama, şurada yeralan 👉 <a href="https://github.com/fathrenheit/Finans" target="_blank">Finans</a> reposu kullanılarak geliştirilmiştir.
 
 </div>
 """

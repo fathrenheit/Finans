@@ -1,18 +1,21 @@
 import pandas as pd
 import streamlit as st
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))) # adding parent dirs to python path
 from IsYatirim import IsYatirimScraper
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))) # adding parent dirs to python path
 from use_case_hisse_analiz_python import HisseAnaliz
 from KAPScraper import KAPHelper, KAP
 import plotly.graph_objects as go
 from datetime import date, timedelta
 
-@st.cache_data
+@st.cache_data(show_spinner=False)
 def get_price_df(ticker:str, start_date:str, end_date:str):
 
     price_df = IsYatirimScraper().get_is_yatirim_price_data(ticker=ticker, start_date=start_date, end_date=end_date)
     return price_df[["TARIH", "GUN ICI EN DUSUK", "GUN ICI EN YUKSEK", "HISSE KODU", "KAPANIS FIYATI (TL)", "DOLAR KURU (TL)", "DOLAR BAZLI FIYAT (USD)"]]
 
-@st.cache_data
+@st.cache_data(show_spinner=False)
 def get_hisse_analiz(firma_kodu:str, price_df:pd.DataFrame):
     ha = HisseAnaliz(firma_kodu=firma_kodu)
 
@@ -32,7 +35,7 @@ def get_firmalar():
     kap = KAPHelper()
     return kap.firma_listesi()
 
-@st.cache_data
+@st.cache_data(show_spinner=False)
 def get_bist50():
     kap = KAPHelper()
     return kap.endeksler()["BIST 50"]
@@ -111,16 +114,17 @@ def price_graph(price_df, ticker):
     st.plotly_chart(fig, use_container_width=True)
 
 
-def df_design(df, tablo_tipi) -> pd.DataFrame:
+def df_design(df:pd.DataFrame, tablo_tipi) -> pd.DataFrame:
     """
     Son ceyrek ve bir onceki senenin ayni ceyregi icin kumulatif kiyas yapan df'nin dizayni
     """
     # Son ceyrek ve bir onceki senenin ayni ceyregi -> 09/2023 | 09/2022
     df = df.iloc[:, :3].copy()
     # Kolonlarin data tipi her ihtimale karsi int64'e cevrilir ve 1.000'e bolunur.
+
     for col in df.columns[1:]:
-        df.loc[:, col] = df.loc[:, col].astype("float64")
-        df.loc[:, col] /= 1000.0 # Bin Tl
+        df[col] = df[col].astype("float64")
+        df[col] = df[col].divide(1000.0) # / 1000 TL
 
     # Degisim orani bulunur
     df.loc[:, "%"] = float
@@ -317,13 +321,24 @@ def get_input_hisse_analiz():
     end_date = date.today().strftime("%d-%m-%Y")
     return ticker, start_date, end_date
 
-def main():
-    
-    ticker, start_date, end_date = get_input_hisse_analiz()
-    if st.button("Hesapla 📊"):
+def callback():
+    st.session_state.button_clicked = True
 
-        price_df = get_price_df(ticker=ticker, start_date=start_date, end_date=end_date)
-        hisse_analiz = get_hisse_analiz(firma_kodu=ticker, price_df=price_df)
+def main():
+    # if "button_clicked" not in st.session_state:
+    #     st.session_state.button_clicked = False
+
+
+    ticker, start_date, end_date = get_input_hisse_analiz()
+    if st.button("Hesapla 📊"): #", on_click=callback) or st.session_state.button_clicked:
+
+        if not ticker:
+            st.warning("Lütfen hisse senedi seçiniz.")
+            st.stop()
+        
+        with st.spinner("Veriler indiriliyor..."):
+            price_df = get_price_df(ticker=ticker, start_date=start_date, end_date=end_date)
+            hisse_analiz = get_hisse_analiz(firma_kodu=ticker, price_df=price_df)
         _, firma_bilgileri, grafik, _ = st.columns((.5,4,5,.5))
         
         with firma_bilgileri:
@@ -365,12 +380,13 @@ def main():
         # oranlar
         with rasyolar_col:
             rasyolar(hisse_analiz=hisse_analiz)
-        
+            
         # kap bildirimleri
         with son_kap_haberleri:
             st.text("Son KAP Haberleri") # === kap sayfalarina href eklenecek
             st.divider()
             st.markdown(get_kap_bildirimler(ticker=ticker), unsafe_allow_html=True)
-        
+
+
 if __name__ == "__main__":
     main()

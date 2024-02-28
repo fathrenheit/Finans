@@ -175,11 +175,7 @@ def calculate(button, ticker, start_date, end_date, hesaplama_tipi, div_re, tuta
             for col in df_p.columns:
                 df_p[col] = df_p[col].astype(str)
             st.dataframe(df_p, use_container_width=True, hide_index=True)
-            # s1 = dict(selector='th', props=[('text-align', 'left')])
-            # s2 = dict(selector='td', props=[('text-align', 'left')])
-            # # you can include more styling paramteres, check the pandas docs
-            # table = df_p.style.set_table_styles([s1,s2]).hide(axis=0).to_html()     
-            # st.write(f'{table}', unsafe_allow_html=True)
+
         # Outputting result of the computation in dataframe format
         with b:
             
@@ -202,8 +198,8 @@ def calculate(button, ticker, start_date, end_date, hesaplama_tipi, div_re, tuta
             # Making a df using the dict
             df_portfoy = pd.DataFrame(data=data_portfoy, index=[_ for _ in range(5)])
             # Some styling
-            # df_portfoy = df_portfoy.style\
-            #     .format(precision=2, thousands=".", decimal=",")
+            df_portfoy = df_portfoy.style\
+                .format(precision=2, thousands=".", decimal=",")
             
             # Dictionary of shares computed
             data_lot = {
@@ -253,6 +249,6 @@ def main():
     ticker, start_date, end_date, hesaplama_tipi, div_re, tutar = get_input()
     calculate_button = st.button("Hesapla 📈")
     if calculate_button:
-        calculate(button= calculate_button, ticker=ticker, start_date=start_date, end_date=end_date, hesaplama_tipi=hesaplama_tipi, div_re=div_re, tutar=tutar)
+        calculate(button= calculate_button, ticker=ticker + ".IS", start_date=start_date, end_date=end_date, hesaplama_tipi=hesaplama_tipi, div_re=div_re, tutar=tutar)
 if __name__ == "__main__":
     main()
