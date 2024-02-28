@@ -59,6 +59,7 @@ BIST'teki şirketler için belirlenen tarih aralığında yapılan yatırımın 
 - Her ay düzenli alım ile yapılan yatırımın bugünkü değeri
 - Temettülerin geri yatırılması seçeneği
 
+
 ### Kurulum
 
 1. Bu repoyu klonlayın: <br>
@@ -66,25 +67,20 @@ BIST'teki şirketler için belirlenen tarih aralığında yapılan yatırımın 
         $ git clone https://github.com/fathrenheit/Finans.git
 
 2. Bir sanal ortam oluşturun (Virtual environment) ve aktifleştirin: <br>
-    Linux ve macOS:
+    Linux ve macOS: <br>
+        
         $ python3 -m venv finance-venv
         $ source venv/bin/activate
+    
     Windows Powershell:
-        $ python3 -m venv finance-venv
-        $ finance-venv\scripts\activate.ps1
 
-Eğer sadece ana klasörde bulunan `IsYatirim.py`, `KAPScraper.py`, `Rasyolar.py`, `ReturnCalculator.py`, `Yahoo.py` scriptlerini kullanmak istiyorsanız:
-    3. Gerekli kütüphaneleri `requirements.txt` dosyasını kullanarak yükleyin: <br>
+        PS> python3 -m venv finance-venv
+        PS> finance-venv\scripts\activate.ps1
 
+3. Gerekli kütüphaneleri `requirements.txt` dosyasını kullanarak yükleyin: <br>
+        
         $ pip install -r requirements.txt
 
-    4. Scriptler artık kullanıma hazır.
+4. ddd
 
-`Streamlit` frameworku ile geliştirilmiş web uygulamasını kullanmak istiyorsanız:
-    3. Gerekli kütüphaneleri `requirements_st.txt` dosyasını kullanarak yükleyin.
-    
-        $ pip install -r requirements_st.txt
-    
-    4. Aplikasyonu çalıştırın: <br>
-
-        $ streamlit run '.\usecase_using_streamlit\Ana sayfa 🏠.py'
+`Streamlit` ile geliştirilen web uygulamasının kurulumu için şuradaki [`readme_streamlit.md`]() talimatları izleyin.
