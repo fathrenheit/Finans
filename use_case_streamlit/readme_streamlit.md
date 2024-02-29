@@ -4,7 +4,7 @@
 
 Bu uygulama, ana klasörde bulunan `IsYatirim.py`, `Yahoo.py`, `KAPScraper.py`, `Rasyolar.py` ve `ReturnCalculator.py` scriptlerini kullanır ve sade bir arayüz ile kullanıcıya BIST50 endeksinde yer alan firmalarla ilgili hisse analizi ve getiri analizi yapabilmesini sağlar. `Financial Dashboard` uygulaması [Streamlit](https://streamlit.io/) frameworku kullanılarak geliştirilmiştir.
 
-## Buraya gif gelecek...
+![Demo](demo/demo.gif)
 
 ### Kurulum
 
@@ -29,22 +29,22 @@ Bu uygulama, ana klasörde bulunan `IsYatirim.py`, `Yahoo.py`, `KAPScraper.py`, 
         PS> finance-venv\Scripts\Activate.ps1
         ```
 
-3. `use_case_using_streamlit` klasörüne geçiş yapın: <br>
+3. `use_case_streamlit` klasörüne geçiş yapın: <br>
 
     ```bash
     $ cd ./use_case_using_streamlit/
     ```
 
-4. Gerekli kütüphaneleri `req_streamlit.txt` dosyasını kullanarak yükleyin: <br>
+4. Gerekli kütüphaneleri `requirements.txt` dosyasını kullanarak yükleyin: <br>
         
     ```bash
-    $ pip install -r req_streamlit.txt
+    $ pip install -r requirements.txt
     ```
-
+    __NOT: Bu klasördeki `requirements.txt` ile ana klasördeki `requirements.txt` dosya isimlerinin aynı olduğuna dikkat edin. Streamlit web uygulamasını kullanmak istiyorsanız `use_case_streamlit` klasöründe bulunan `requirements.txt` dosyasını kullanarak ilgili kütüphaneleri yüklemelisiniz. <br>__
 5. Uygulamayı çalıştırın: <br>
 
     ```bash
-    $ streamlit run './Ana sayfa.py'
+    $ streamlit run './Ana_sayfa.py'
     ```
 
 ### Kullanım
@@ -60,3 +60,5 @@ Bu uygulama, yukarıda yazılı olan yönergeler izlendikten sonra yerel makinen
     - Tarih aralığı seçilir. Tarihler 2015 yılından başlayarak günümüze kadar olan tarihleri kapsamaktadır.
     - Yatırım tipi seçilir. `Tek seferlik yatırım`; geçmişteki herhangi bir tarihte yapılan _tek seferlik_ bir yatırımı, `Her ay düzenli yatırım` ise _her ay yapılan düzenli_ hisse alımlarıyla yapılan yatırımı ifade eder. Düzenli alımlarda hissenin her ayın ilk iş gününde satın alındığı varsayılmıştır.
     - Temettüler ile ne yapılacağı seçilir. Bu parametre ile firmaların size ödediği temettüler ile ne yapacağınızı seçebilirsiniz; hisse geri alımı yaparak bileşik getiri potansiyelini de artırabilirsiniz, gelen temettüleri doğrudan hesabınızda da tutabilirsiniz.
+
+- `Hakkında:` Uygulamanın amacını hakkında bilgi verir ve sorumluluk reddi beyanını içerir.

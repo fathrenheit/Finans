@@ -83,4 +83,4 @@ BIST'teki şirketler için belirlenen tarih aralığında yapılan yatırımın 
 
 4. Bu aşamadan sonra herhangi bir IDE ya da Python 3.x destekli metin düzenleyici ile kodları çalıştırabilir, düzenleyebilir, kendi projelerinizde kullanabilirsiniz!
 
-`Streamlit` ile geliştirilen web uygulamasının kurulumu için şuradaki [`readme_streamlit.md`](https://github.com/fathrenheit/Finans/blob/main/use_case_using_streamlit/readme_streamlit.md) talimatları izleyin.
+`Streamlit` ile geliştirilen web uygulamasının kurulumu için şuradaki [`readme_streamlit.md`](https://github.com/fathrenheit/Finans/blob/main/use_case_streamlit/readme_streamlit.md) talimatları izleyin.

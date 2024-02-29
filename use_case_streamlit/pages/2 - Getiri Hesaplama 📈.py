@@ -100,7 +100,7 @@ def get_input():
         else:
             div_re = False
 
-    tutar = st.number_input("Yatırım tutarını giriniz:", placeholder="Yatırım tutarını giriniz?", min_value=0)
+    tutar = st.number_input("Yatırım tutarını giriniz:", min_value=0)
     return ticker, start_date, end_date, hesaplama_tipi, div_re, tutar
 
 
