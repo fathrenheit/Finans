@@ -1,7 +1,8 @@
 ### Financial Dashboard App
 
-Financial Dashboard uygulamasina hosgeldiniz!
-Bu uygulama ana klasorde bulunan `IsYatirim.py`, `Yahoo.py`, `KAPScraper.py`, `Rasyolar.py` ve `ReturnCalculator.py` sciptlerini kullanir ve sade bir arayuz ile kullaniciya BIST50 endeksinde yer alan firmalarla ilgili hisse analizi ve getiri analizi yapabilmesini saglar. `Financial Dashboard` uygualamasi [`streamlit`](https://streamlit.io/) frameworku kullanilarak gelistirilmistir. 
+# Financial Dashboard Uygulamasına Hoşgeldiniz!
+
+Bu uygulama, ana klasörde bulunan `IsYatirim.py`, `Yahoo.py`, `KAPScraper.py`, `Rasyolar.py` ve `ReturnCalculator.py` scriptlerini kullanır ve sade bir arayüz ile kullanıcıya BIST50 endeksinde yer alan firmalarla ilgili hisse analizi ve getiri analizi yapabilmesini sağlar. `Financial Dashboard` uygulaması [Streamlit](https://streamlit.io/) frameworku kullanılarak geliştirilmiştir.
 
 ## Buraya gif gelecek...
 

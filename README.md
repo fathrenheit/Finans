@@ -5,18 +5,18 @@
 [![Streamlit](https://img.shields.io/badge/Made%20with-Streamlit-FF6F61.svg)](https://streamlit.io/)
 [![Lisans: MIT](https://img.shields.io/badge/Lisans-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Bu depo; İş Yatırım, KAP ve Yahoo Finance web sitelerinde yayınlanan verilere erişerek istenilen finansal bilgilere ulaşmayı sağlar.
+Bu repo; İş Yatırım, KAP ve Yahoo Finance web sitelerinde yayınlanan verilere erişerek istenilen finansal bilgilere ulaşmayı sağlar.
 
 ## Açıklamalar
 
-Bu depo, BIST endekslerinde yer alan şirketlerle ilgili çeşitli verileri toplamayı amaçlayan araçlar içerir. Söz konusu veriler, çoğunlukla herkese açık API'lerden elde edilir (`IsYatirim.py`, `Yahoo.py`); bununla birlikte web kazıma yöntemleri kullanılarak elde edilen veriler de vardır (`KAPScraper.py`).
-Ham verilerin eldesi dışında araçlar da mevcuttur. Bunlar; `Rasyolar.py` ve `ReturnCalculator.py` dosyalarıdır. Rasyolar.py ve ReturnCalculator.py, IsYatirim.py ve Yahoo.py'den elde edilen ham verileri kullanarak kullanıcıya daha anlamlı bilgiler sunan araçlardır.
-Son olarak, `usecase_using_streamlit` klasörü içerisinde yukarıda bahsedilen araçların Streamlit frameworku ile beraber kullanıldığı bir web uygulaması yer almaktadır.
+Bu repo, BIST endekslerinde yer alan şirketlerle ilgili çeşitli verileri toplamayı amaçlayan araçlar içerir. Söz konusu veriler, çoğunlukla herkese açık API'lerden elde edilir (`IsYatirim.py`, `Yahoo.py`); bununla birlikte web kazıma yöntemleri kullanılarak elde edilen veriler de vardır (`KAPScraper.py`). <br>
+Ham verilerin eldesi dışında araçlar da mevcuttur. Bunlar; `Rasyolar.py` ve `ReturnCalculator.py` dosyalarıdır. Rasyolar.py ve ReturnCalculator.py, IsYatirim.py ve Yahoo.py'den elde edilen ham verileri kullanarak kullanıcıya daha anlamlı bilgiler sunan araçlardır. <br>
+Son olarak, `use_case_using_streamlit` klasörü içerisinde yukarıda bahsedilen araçların Streamlit frameworku ile beraber kullanıldığı bir web uygulaması yer almaktadır.
 
 ### Dosyalar
 
 #### `IsYatirim.py`
-İş Yatırım Menkul Değerler A.Ş.'ne ait olan [isyatirim.com.tr](isyatirim.com.tr) web sitesinin herkese açık API'sini kullanarak BIST firmalarına ait çeşitli verileri çeker. Bunlar:
+İş Yatırım Menkul Değerler A.Ş.'ne ait olan [isyatirim.com.tr](https://www.isyatirim.com.tr) web sitesinin herkese açık API'sini kullanarak BIST firmalarına ait çeşitli verileri çeker. Bunlar:
 - İlgili firmanın tarihsel fiyat bilgisi
 - İlgili firmanın çeyreklik finansal tabloları
 - İlgili firmanın sermaye artırımı ve temettü geçmişi
@@ -50,7 +50,7 @@ Kamu Aydınlatma Platformu'nda ([KAP.org.tr](https://www.kap.org.tr/tr/)) yer al
 - Herhangi bir firma özelinde geçmişe yönelik bildirimler (tüm bildirimler, finansal raporlar, özel durum açıklamaları vb.)
 
 #### `Yahoo.py`
-Yahoo Inc.'ye ait olan [finance.yahoo.com](finance.yahoo.com) web sitesinin API'sini kullanarak, hem BIST hem de Nasdaq, NYSE gibi endekslerde yer alan firmalara ait tarihsel fiyat verilerini elde eder. 
+Yahoo Inc.'ye ait olan [finance.yahoo.com](https://www.finance.yahoo.com) web sitesinin API'sini kullanarak, hem BIST hem de Nasdaq, NYSE gibi endekslerde yer alan firmalara ait tarihsel fiyat verilerini elde eder. 
 
 #### `ReturnCalculator.py`
 BIST'teki şirketler için belirlenen tarih aralığında yapılan yatırımın bugünkü değerini Türk Lirası ve Amerikan Doları cinsinden hesaplar. Hesaplama parametreleri şunlardır:
@@ -81,6 +81,6 @@ BIST'teki şirketler için belirlenen tarih aralığında yapılan yatırımın 
         
         $ pip install -r requirements.txt
 
-4. ddd
+4. Bu aşamadan sonra herhangi bir IDE ya da Python 3.x destekli metin düzenleyici ile kodları çalıştırabilir, düzenleyebilir, kendi projelerinizde kullanabilirsiniz!
 
-`Streamlit` ile geliştirilen web uygulamasının kurulumu için şuradaki [`readme_streamlit.md`]() talimatları izleyin.
+`Streamlit` ile geliştirilen web uygulamasının kurulumu için şuradaki [`readme_streamlit.md`](https://github.com/fathrenheit/Finans/blob/main/use_case_using_streamlit/readme_streamlit.md) talimatları izleyin.
